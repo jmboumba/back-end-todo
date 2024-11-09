@@ -2,11 +2,13 @@ require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcryptjs');  // bcryptjs for hashing passwords
 const cors = require('cors');
+const jwt = require('jsonwebtoken');
 const app = express();
 
 //import the database connection 
 const db = require('./db_connect');
 
+//Use middlewares
 app.use(cors());
 app.use(express.json());
 
@@ -16,6 +18,18 @@ app.get('/', (req, res) => {
 });
 
 //TODOS PART
+
+    //Retrieve tasks of an user
+    app.get('/todos/:user_id', (req, res) => {
+      const { user_id } = req.params;
+
+      db.query('SELECT * FROM todos where user_id = ?', [user_id], (err, results) => {
+      if (err) {
+          return res.status(500).send(err.message);
+      }
+      res.json(results);
+      });
+  });
 
     //Add a task to the db
         app.post('/todos', (req, res) => {
@@ -67,6 +81,7 @@ app.get('/', (req, res) => {
         });
 
 
+        
 //USERS PART
 
 // Signup Route (Register User)
@@ -122,13 +137,31 @@ app.post('/signup', async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ message: 'Incorrect password.' });
       }
+
+      
+      const token = jwt.sign(
+        { userId: user.id, email: user.email },  // Payload
+        process.env.MY_ACCESS_TOKEN,                              // Secret key
+        { expiresIn: '1h' }                      // Token expiration (1 hour)
+      );
+      
+      const user_id = user.id;
+      const firstname = user.firstname;
+      const lastname = user.lastname;
   
       // Successful login
-      res.status(200).json({ message: 'Login successful!', userId: user.id });
+      res.status(200).json({ 
+        message: 'Login successful!', 
+        token,
+        firstname:firstname,
+        lastname:lastname,
+        email:email,
+        user_id: user_id
+      });
     });
   });
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);
   console.log(process.env.MYSQL_PUBLIC_URL);

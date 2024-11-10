@@ -9,7 +9,7 @@ const db = require('./db_connect');
 app.use(cors({
   origin: `*`, // Replace with your React frontend URL in production
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow necessary HTTP methods
-  credentials: true,               // If your frontend needs cookies or authentication
+  credentials: false,               // If your frontend needs cookies or authentication
 }));
 
 //Use middlewares

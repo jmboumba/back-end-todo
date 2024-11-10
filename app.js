@@ -9,7 +9,7 @@ const app = express();
 const db = require('./db_connect');
 app.use(cors({
   origin: `${process.env.EXPRESS_FRONTEND_URL}`, // Replace with your React frontend URL in production
-  credentials: true,               // If your frontend needs cookies or authentication
+  credentials: false,               // If your frontend needs cookies or authentication
 }));
 
 //Use middlewares

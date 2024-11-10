@@ -7,7 +7,7 @@ const app = express();
 //import the database connection 
 const db = require('./db_connect');
 app.use(cors({
-  origin: `${process.env.EXPRESS_FRONTEND_URL}`, // Replace with your React frontend URL in production
+  origin: `*`, // Replace with your React frontend URL in production
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allow necessary HTTP methods
   credentials: true,               // If your frontend needs cookies or authentication
 }));

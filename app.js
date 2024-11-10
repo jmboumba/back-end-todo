@@ -14,7 +14,6 @@ app.use(cors({
 }));
 
 //Use middlewares
-app.use(cors());
 app.use(express.json());
 
 app.get('/', (req, res) => {

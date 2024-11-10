@@ -2,7 +2,6 @@ require('dotenv').config();
 const express = require('express');
 const bcrypt = require('bcryptjs');  // bcryptjs for hashing passwords
 const cors = require('cors');
-const jwt = require('jsonwebtoken');
 const app = express();
 
 //import the database connection 
@@ -142,13 +141,6 @@ app.post('/signup', async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ message: 'Incorrect password.' });
       }
-
-      
-      const token = jwt.sign(
-        { userId: user.id, email: user.email },  // Payload
-        process.env.MY_ACCESS_TOKEN,                              // Secret key
-        { expiresIn: '1h' }                      // Token expiration (1 hour)
-      );
       
       const user_id = user.id;
       const firstname = user.firstname;
@@ -157,7 +149,6 @@ app.post('/signup', async (req, res) => {
       // Successful login
       res.status(200).json({ 
         message: 'Login successful!', 
-        token,
         firstname:firstname,
         lastname:lastname,
         email:email,

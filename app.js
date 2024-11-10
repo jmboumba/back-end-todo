@@ -14,6 +14,7 @@ app.use(cors({
 }));
 
 //Use middlewares
+
 app.use(express.json());
 
 app.get('/', (req, res) => {
@@ -33,14 +34,6 @@ app.get('/', (req, res) => {
       }
       res.json(results);
       });
-
-      db.end((err) => {
-        if (err) {
-          console.error('Error closing the connection:', err.stack);
-        } else {
-          console.log('Database connection closed.');
-        }
-      });
   });
 
     //Add a task to the db
@@ -58,14 +51,6 @@ app.get('/', (req, res) => {
                     res.status(200).send('Task is created successfully');
                 }
             });
-
-            db.end((err) => {
-              if (err) {
-                console.error('Error closing the connection:', err.stack);
-              } else {
-                console.log('Database connection closed.');
-              }
-            });
         });
 
     //retrieve all the tasks
@@ -75,14 +60,6 @@ app.get('/', (req, res) => {
                 return res.status(500).send(err.message);
             }
             res.json(results);
-            });
-
-            db.end((err) => {
-              if (err) {
-                console.error('Error closing the connection:', err.stack);
-              } else {
-                console.log('Database connection closed.');
-              }
             });
         });
 
@@ -105,14 +82,6 @@ app.get('/', (req, res) => {
             }
         
             res.status(200).json({ message: 'Todo deleted successfully.' });
-            });
-
-            db.end((err) => {
-              if (err) {
-                console.error('Error closing the connection:', err.stack);
-              } else {
-                console.log('Database connection closed.');
-              }
             });
         });
 
@@ -147,14 +116,6 @@ app.post('/signup', async (req, res) => {
         }
   
         res.status(201).json({ message: 'User registered successfully!' });
-      });
-
-      db.end((err) => {
-        if (err) {
-          console.error('Error closing the connection:', err.stack);
-        } else {
-          console.log('Database connection closed.');
-        }
       });
     });
   });
@@ -201,14 +162,6 @@ app.post('/signup', async (req, res) => {
         lastname:lastname,
         email:email,
         user_id: user_id
-      });
-
-      db.end((err) => {
-        if (err) {
-          console.error('Error closing the connection:', err.stack);
-        } else {
-          console.log('Database connection closed.');
-        }
       });
     });
   });

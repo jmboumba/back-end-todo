@@ -92,6 +92,11 @@ app.get('/', (req, res) => {
 app.post('/signup', async (req, res) => {
     const { firstname, lastname, email, password, date_creation } = req.body;
   
+    if (connection.state === 'disconnected') {
+      console.error('Connection is closed. Reconnecting...');
+      connectToDatabase();
+    }
+    
     // Check if the email already exists
     db.query('SELECT * FROM users WHERE email = ?', [email], async (err, result) => {
       if (err) {
@@ -122,7 +127,12 @@ app.post('/signup', async (req, res) => {
   // Signin Route (Login User)
   app.post('/signin', (req, res) => {
     const { email, password } = req.body;
-  
+    
+    if (db.state === 'disconnected') {
+      console.error('Connection is closed. Reconnecting...');
+      connectToDatabase();
+    }
+
     // Find user by email
     db.query('SELECT * FROM users WHERE email = ?', [email], async (err, result) => {
       if (err) {

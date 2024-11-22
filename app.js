@@ -180,6 +180,28 @@ app.post('/signup', async (req, res) => {
     });
   });
 
+
+  //Retrieve tasks of an user
+  app.get('/logout/:id', (req, res) => {
+    const { id } = req.params;
+
+    const query = 'UPDATE users SET status = ? WHERE id = ?';
+    const status = 0;
+
+    db.query(query, [status, id], (err, results) => {
+      if (err) {
+        console.error('Error updating user status:', err);
+        return res.status(500).send({ message: 'Database error' });
+      }
+
+      if (results.affectedRows === 0) {
+        return res.status(404).send({ message: 'User not found' });
+      }
+
+      res.status(200).send({ message: 'User status updated successfully' });
+    });
+  });
+
 const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

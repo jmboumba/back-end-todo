@@ -182,8 +182,12 @@ app.post('/signup', async (req, res) => {
 
 
   //Retrieve tasks of an user
-  app.get('/logout/:id', (req, res) => {
+  app.post('/logout/:id', (req, res) => {
     const { id } = req.params;
+
+    if (!id || isNaN(id)) {
+      return res.status(400).send({ message: 'Invalid user ID' });
+    }
 
     const query = 'UPDATE users SET status = ? WHERE id = ?';
     const status = 0;
@@ -198,7 +202,7 @@ app.post('/signup', async (req, res) => {
         return res.status(404).send({ message: 'User not found' });
       }
 
-      res.status(200).send({ message: 'User status updated successfully' });
+      res.status(200).send({ message: 'User logged out successfully' });
     });
   });
 

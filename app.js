@@ -155,6 +155,22 @@ app.post('/signup', async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ message: 'Incorrect password.' });
       }
+
+      const query = 'UPDATE users SET status = ? WHERE id = ?';
+      const status = 1;
+
+      connection.query(query, [status, user.id], (err, results) => {
+        if (err) {
+          console.error('Error updating user status:', err);
+          return res.status(500).send({ message: 'Database error' });
+        }
+
+        if (results.affectedRows === 0) {
+          return res.status(404).send({ message: 'User not found' });
+        }
+
+        res.status(200).send({ message: 'User status updated successfully' });
+      });
   
       // Successful login
       res.status(200).json({ 

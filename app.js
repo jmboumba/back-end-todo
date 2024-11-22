@@ -92,7 +92,7 @@ app.get('/', (req, res) => {
 app.post('/signup', async (req, res) => {
     const { firstname, lastname, email, password} = req.body;
   
-    if (connection.state === 'disconnected') {
+    if (db.state === 'disconnected') {
       console.error('Connection is closed. Reconnecting...');
       connectToDatabase();
     }

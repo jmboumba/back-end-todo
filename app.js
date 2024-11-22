@@ -151,18 +151,11 @@ app.post('/signup', async (req, res) => {
       if (!isMatch) {
         return res.status(400).json({ message: 'Incorrect password.' });
       }
-      
-      const user_id = user.id;
-      const firstname = user.firstname;
-      const lastname = user.lastname;
   
       // Successful login
       res.status(200).json({ 
         message: 'Login successful!', 
-        firstname:firstname,
-        lastname:lastname,
-        email:email,
-        user_id: user_id
+        user:user,
       });
     });
   });

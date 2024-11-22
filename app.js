@@ -159,7 +159,7 @@ app.post('/signup', async (req, res) => {
       const query = 'UPDATE users SET status = ? WHERE id = ?';
       const status = 1;
 
-      connection.query(query, [status, user.id], (err, results) => {
+      db.query(query, [status, user.id], (err, results) => {
         if (err) {
           console.error('Error updating user status:', err);
           return res.status(500).send({ message: 'Database error' });

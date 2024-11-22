@@ -90,7 +90,7 @@ app.get('/', (req, res) => {
 
 // Signup Route (Register User)
 app.post('/signup', async (req, res) => {
-    const { firstname, lastname, email, password, date_creation } = req.body;
+    const { firstname, lastname, email, password} = req.body;
   
     if (connection.state === 'disconnected') {
       console.error('Connection is closed. Reconnecting...');
@@ -110,10 +110,14 @@ app.post('/signup', async (req, res) => {
   
       // Hash the password
       const hashedPassword = await bcrypt.hash(password, 10);
+      const today = new Date();
+      const date_creation = today.toISOString().split('T')[0];
+      const status = 0;
+      const email_verified = 0;
   
       // Insert user into database
-      const sql = 'INSERT INTO users (firstname, lastname, email, password, date_creation) VALUES (?, ?, ?, ?, ?)';
-      db.query(sql, [firstname, lastname, email, hashedPassword, date_creation], (err, result) => {
+      const sql = 'INSERT INTO users (firstname, lastname, email, password, date_creation, status, email_verified) VALUES (?, ?, ?, ?, ?, ?, ?)';
+      db.query(sql, [firstname, lastname, email, hashedPassword, date_creation, status, email_verified], (err, result) => {
         if (err) {
           console.error('Error inserting user:', err);
           return res.status(500).json({ error: 'Failed to register user.' });

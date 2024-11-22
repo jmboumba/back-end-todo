@@ -155,7 +155,7 @@ app.post('/signup', async (req, res) => {
       // Successful login
       res.status(200).json({ 
         message: 'Login successful!', 
-        user:user,
+        user:user.id,
       });
     });
   });

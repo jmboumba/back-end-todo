@@ -218,6 +218,34 @@ app.post('/signup', async (req, res) => {
     });
   });
 
+
+  //Update user data
+  app.post('/users/update/:id', (req, res) => {
+    const { id } = req.params;
+    const { firstname, lastname, email } = req.body;
+
+    if (!id || isNaN(id)) {
+      return res.status(400).send({ message: 'Invalid user ID' });
+    }
+    if (!firstname || !lastname || !email) {
+      return res.status(400).send({ message: 'Incomplete champ, please fill in.' });
+    }
+
+     // Requête SQL pour mettre à jour l'utilisateur
+    const query = 'UPDATE users SET firstname = ?, lastname = ?, email = ? WHERE id = ?';
+    const values = [firstname, lastname, email, id];
+
+    db.query(query, values, (err, result) => {
+      if (err) {
+        console.error('Erreur lors de la mise à jour', err);
+        return res.status(500).json({ error: 'Erreur lors de la mise à jour' });
+      }
+
+      console.log('Données mises à jour');
+      res.status(200).json({ message: 'Utilisateur mis à jour avec succès', result });
+    });
+  });
+
 const port = process.env.PORT;
 app.listen(port, () => {
   console.log(`Server running on port ${port}`);

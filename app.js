@@ -181,7 +181,7 @@ app.post('/signup', async (req, res) => {
   });
 
 
-  //Retrieve tasks of an user
+  //Logout an user
   app.post('/logout/:id', (req, res) => {
     const { id } = req.params;
 
@@ -203,6 +203,18 @@ app.post('/signup', async (req, res) => {
       }
 
       res.status(200).send({ message: 'User logged out successfully' });
+    });
+  });
+
+  //Retrieve data of an user
+  app.get('/users/:id', (req, res) => {
+    const { id } = req.params;
+
+    db.query('SELECT * FROM users where id = ?', [id], (err, results) => {
+    if (err) {
+        return res.status(500).send(err.message);
+    }
+    res.status(200).send({ user: results });
     });
   });
 

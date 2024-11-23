@@ -245,7 +245,7 @@ app.post('/signup', async (req, res) => {
       if (err) {
           return res.status(500).send(err.message);
       }
-      res.status(200).send({ tasks: results });
+      res.status(200).json({ tasks: results });
     });
   });
 

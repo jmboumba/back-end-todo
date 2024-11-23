@@ -23,17 +23,7 @@ app.get('/', (req, res) => {
 
 //TODOS PART
 
-    //Retrieve tasks of an user
-    app.get('/todos/:user_id', (req, res) => {
-      const { user_id } = req.params;
-
-      db.query('SELECT * FROM todos where user_id = ?', [user_id], (err, results) => {
-      if (err) {
-          return res.status(500).send(err.message);
-      }
-      res.json(results);
-      });
-  });
+    
 
     //Add a task to the db
         app.post('/todos', (req, res) => {
@@ -243,6 +233,19 @@ app.post('/signup', async (req, res) => {
 
       console.log('Données mises à jour');
       res.status(200).json({ message: 'Utilisateur mis à jour avec succès', result });
+    });
+  });
+
+
+  //Retrieve tasks of an user
+  app.get('/tasks/:id', (req, res) => {
+    const { id } = req.params;
+
+    db.query('SELECT * FROM todos where user_id = ?', [id], (err, results) => {
+      if (err) {
+          return res.status(500).send(err.message);
+      }
+      res.status(200).send({ tasks: results });
     });
   });
 
